@@ -1,0 +1,52 @@
+.p-index {
+  $carouselGradientWidth: 2rem;
+
+  %pseudo-gradient {
+    content: '';
+    transition: opacity 0.4s;
+    position: absolute;
+    width: $carouselGradientWidth;
+    top: 0;
+    height: 100%;
+    z-index: theme('zIndex.10');
+  }
+
+  .p-index__container {
+    position: relative;
+
+    > div::-webkit-scrollbar {
+      display: none;
+    }
+
+    &::before {
+      @extend %pseudo-gradient;
+      background: linear-gradient(90deg, transparent 0%, rgba(white, 0.5) 75%, white 100%);
+      right: 0;
+      opacity: 1;
+    }
+
+    &::after {
+      @extend %pseudo-gradient;
+      background: linear-gradient(90deg, white 0%, rgba(white, 0.5) 25%, transparent 100%);
+      left: 0;
+      opacity: 0;
+    }
+  }
+
+  .p-index__container--right--toggle::before {
+    opacity: 0;
+  }
+
+  .p-index__container--left--toggle::after {
+    opacity: 1;
+  }
+
+  @screen sm {
+    .p-index__container {
+      &::before,
+      &::after {
+        content: none
+      }
+    }
+  }
+}

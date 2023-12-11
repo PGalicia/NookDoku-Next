@@ -1,0 +1,12 @@
+.c-grid {
+  $cellSizeWidth: 125px;
+
+  grid-template-columns: repeat(4, $cellSizeWidth);
+  left: unset;
+  transform: unset;
+
+  @screen sm {
+    left: 50%;
+    transform: translateX(calc(-50% - calc($cellSizeWidth / 2)));
+  }
+}
