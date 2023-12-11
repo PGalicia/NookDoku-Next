@@ -124,19 +124,18 @@ export const setupVillagerStore = createAsyncThunk(
   async (_, { dispatch, getState }) => {
     let villagersData = villagerData
 
-    // @TODO: Remember to uncomment this
-    // await fetch('https://api.nookipedia.com/villagers', {
-    //   headers: {
-    //     'X-API-KEY': `${process.env.NEXT_PUBLIC_NOOKEIPEDIA_API_KEY}`
-    //   }
-    // })
-    //   .then(response => response.json())
-    //   .then((data) => {
-    //     villagersData = data
-    //   })
-    //   .catch(() => {
-    //     villagersData = villagerData
-    //   })
+    await fetch('https://api.nookipedia.com/villagers', {
+      headers: {
+        'X-API-KEY': `${process.env.NEXT_PUBLIC_NOOKEIPEDIA_API_KEY}`
+      }
+    })
+      .then(response => response.json())
+      .then((data) => {
+        villagersData = data
+      })
+      .catch(() => {
+        villagersData = villagerData
+      })
 
     // Valid and Invalid media
     const validMedia: string[] = []
