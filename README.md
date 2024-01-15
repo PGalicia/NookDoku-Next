@@ -1,36 +1,12 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NookDoku
+_Currently working on v1 release_
 
-## Getting Started
+### Description:
+A trivia-like web application that tests your knowledge about the Animal Crossing intellectual property. This app uses NookiPedia API to grab animal crossing villager's information
 
-First, run the development server:
+(Check it out)[https://nook-doku-next.vercel.app/]
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### How It Works:
+Similar to grid-based games such as PokeDoku or HoopGrids, you need to find answer that fits the category. Let's say that there's a cell in the grid with the categories of Penguin and Jock for example. You need to find a villager that is in penguin species and has a jock personality (in this example, one answer would be Roald). In the case, you got stuck, there is also a hint system
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The app also records all of your answers just to see which villagers you usually pick (aka your favorites)
