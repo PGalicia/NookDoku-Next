@@ -6,7 +6,7 @@ export default function HeaderDefault () {
 
       {/* How to play button */}
 
-      {/* Donat button */}
+      {/* Donate button */}
     </div>
   );
 }

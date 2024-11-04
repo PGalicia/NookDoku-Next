@@ -161,10 +161,6 @@ export default function ModalDefault () {
           >
             x
           </div>
-          {/* <div
-            className="absolute w-8 h-8 rounded-lg bg-gray-700 cursor-pointer top-4 right-4"
-            onClick={() => onCloseClick()}
-          /> */}
         </div>
 
         {/* Modal main */}

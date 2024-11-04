@@ -103,10 +103,9 @@ export default function Home() {
       }
 
       {/* Villager stats */}
-      {/* {isGridSetup && (isGameComplete(gridObject) || showVillagerStatsModule) && 
+      {isGridSetup && (isGameComplete(gridObject) || showVillagerStatsModule) && 
         <VillagerStats />
-      } */}
-      <VillagerStats />
+      }
 
       {/* Modal */}
       {isModalActive && <ModalDefault />}
