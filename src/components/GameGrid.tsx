@@ -44,7 +44,7 @@ export default function GameGrid () {
    * Constants
    */
   const gridCategoryHeightClass = 'min-h-[24px]'
-  const gridLoadingColor = 'bg-gray-200'
+  const gridLoadingColor = 'bg-white'
 
   /**
    * Methods
@@ -117,7 +117,7 @@ export default function GameGrid () {
             return (
               <div
                 key={`ColumnCategory: ${rowIndex}-${colIndex}`}
-                className={`${gridCategoryHeightClass} ${isGridSetup ? '' : gridLoadingColor } font-mono text-white font-bold uppercase text-sm`}
+                className={`${gridCategoryHeightClass} font-mono text-white font-bold uppercase text-sm`}
               >
                 {findRowOrColumnCategory('col', colIndex - 2)}
               </div>
@@ -128,7 +128,7 @@ export default function GameGrid () {
               <div
                 key={`RowCategory: ${rowIndex}-${colIndex}`}
               >
-                <div className={`${styles['c-grid__rowCat']} ${gridCategoryHeightClass} ${isGridSetup ? '' : gridLoadingColor } font-mono text-white font-bold uppercase text-sm leading-tight`}>
+                <div className={`${styles['c-grid__rowCat']} ${gridCategoryHeightClass} font-mono text-white font-bold uppercase text-sm leading-tight`}>
                   {findRowOrColumnCategory('row', rowIndex - 2)}
                 </div>
               </div>

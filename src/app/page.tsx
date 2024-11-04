@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import React, { useEffect, useState } from 'react'
 
 // Redux
-import { isGameComplete, markGridAsReady } from '@/redux/features/gridObjectSlice'
 import { AppDispatch, RootState } from '@/redux/store'
 import { setupVillagerStore } from '@/redux/features/villagersSlice'
 
@@ -16,7 +15,6 @@ import { setupVillagerStore } from '@/redux/features/villagersSlice'
 import VillagerStats from '@/components/VillagerStats'
 import ModalDefault from '@/components/ModalDefault'
 import GameGrid from '@/components/GameGrid'
-import ButtonDefault from '@/components/ButtonDefault'
 
 // Styles
 import styles from '@/styles/pageIndex.module.scss'
@@ -25,7 +23,6 @@ export default function Home() {
   /**
    * Redux
    */
-  const gridObject = useSelector((state: RootState) => state.gridObjectReducer.gridObject)
   const isGridSetup = useSelector((state: RootState) => state.gridObjectReducer.isGridSetup)
   const currentPlayerScore = useSelector((state: RootState) => state.gridObjectReducer.currentPlayerScore)
   const currentGameMaxScore = useSelector((state: RootState) => state.gridObjectReducer.currentGameMaxScore)
@@ -42,7 +39,6 @@ export default function Home() {
   /**
    * States
    */
-  const [showVillagerStatsModule, setShowVillagerStatsModule] = useState<boolean>(false)
   const [gridContainerClasses, setGridContainerClasses] = useState<string[]>([gridScrollClass])
 
   /**
@@ -83,27 +79,20 @@ export default function Home() {
       </div>
 
       {!isGridSetup &&
-        <div className="text-center italic mt-4">Setting up Game</div>
+        <div className="text-sm text-center mt-4 font-mono uppercase text-white">Setting up Game</div>
       }
 
       {isGridSetup &&
-        <div className="flex flex-col gap-2 items-center">
+        <div className="flex flex-col gap-2 items-center mt-4 mb-8">
           {/* Current player score */}
           <div  className="font-mono text-white font-bold uppercase">
             <span className="text-sm">Current score:</span> {currentPlayerScore} / {currentGameMaxScore}
           </div>
-
-          {/* Stats button toggle */}
-          <ButtonDefault
-            buttonText="Toggle villager stats"
-            onClick={() => setShowVillagerStatsModule(!showVillagerStatsModule)}
-            isSecondary={true}
-          />
         </div>
       }
 
       {/* Villager stats */}
-      {isGridSetup && (isGameComplete(gridObject) || showVillagerStatsModule) && 
+      {isGridSetup && 
         <VillagerStats />
       }
 
