@@ -68,7 +68,10 @@ export default function VillagerStats() {
               <div className="uppercase font-bold flex justify-between">
                 {
                   reformatCount(villager.count).map((num, index) => (
-                    <span className={`${num === '0' ? 'font-normal text-white/50' : 'font-bold text-white'}`}>{num}</span>
+                    <span
+                      key={index}
+                      className={`${num === '0' ? 'font-normal text-white/50' : 'font-bold text-white'}`}
+                    >{num}</span>
                   ))
                 }
               </div>
