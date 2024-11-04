@@ -28,7 +28,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} max-w-3xl mx-auto my-0`}>
+      <body className={`${inter.className} max-w-xl mx-auto my-0 bg-primary`}>
         <ReduxProvider>
           <HeaderDefault />
           {children}

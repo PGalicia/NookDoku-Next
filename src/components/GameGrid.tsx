@@ -105,7 +105,7 @@ export default function GameGrid () {
 
   return (
     <div
-      className={`${styles['c-grid']} grid gap-2 relative w-fit left-1/2`}
+      className={`${styles['c-grid']} grid gap-4 justify-center`}
     >
       {createArrayRange(GRID_SIZE + 1, true).map((rowIndex) => {
         return createArrayRange(GRID_SIZE + 1, true).map((colIndex) => {
@@ -117,7 +117,7 @@ export default function GameGrid () {
             return (
               <div
                 key={`ColumnCategory: ${rowIndex}-${colIndex}`}
-                className={`rounded-lg ${gridCategoryHeightClass} ${isGridSetup ? '' : gridLoadingColor }`}
+                className={`${gridCategoryHeightClass} ${isGridSetup ? '' : gridLoadingColor } font-mono text-white font-bold uppercase text-sm`}
               >
                 {findRowOrColumnCategory('col', colIndex - 2)}
               </div>
@@ -128,14 +128,14 @@ export default function GameGrid () {
               <div
                 key={`RowCategory: ${rowIndex}-${colIndex}`}
               >
-                <div className={`rounded-lg ${gridCategoryHeightClass} ${isGridSetup ? '' : gridLoadingColor }`}>
+                <div className={`${styles['c-grid__rowCat']} ${gridCategoryHeightClass} ${isGridSetup ? '' : gridLoadingColor } font-mono text-white font-bold uppercase text-sm leading-tight`}>
                   {findRowOrColumnCategory('row', rowIndex - 2)}
                 </div>
               </div>
             )
           } else {
+            const villagerCount = getCurrentCellVillagerCount(rowIndex - 2, colIndex - 2)(gridObject)
             const extraCellClassNames = () => {
-              const villagerCount = getCurrentCellVillagerCount(rowIndex - 2, colIndex - 2)(gridObject)
 
               let extraClassnames = [
                 'hover:scale-105',
@@ -145,9 +145,9 @@ export default function GameGrid () {
               if (!isGridSetup) {
                 return [...extraClassnames, gridLoadingColor].join(' ')
               } else if (villagerCount === 1) {
-                return [...extraClassnames, 'bg-violet-500'].join(' ')
+                return [...extraClassnames, 'bg-secondary'].join(' ')
               } else if (villagerCount > 1) {
-                return [...extraClassnames,'bg-blue-300'].join(' ')
+                return [...extraClassnames,'bg-white'].join(' ')
               } else {
                 return ['bg-black', 'cursor-not-allowed'].join(' ')
               }
@@ -157,7 +157,7 @@ export default function GameGrid () {
             return (
               <div
                 key={`RegularCell: ${rowIndex}-${colIndex}`}
-                className={`transition-transform flex relative rounded-lg p-4 justify-center aspect-square ${extraCellClassNames()}`}
+                className={`${styles['c-grid__cell']} transition-transform flex relative rounded-md p-4 justify-center ${extraCellClassNames()}`}
                 onClick={() => onGridClick(rowIndex - 2, colIndex - 2)}
               >
                 {/* Villager image */}
@@ -165,18 +165,19 @@ export default function GameGrid () {
                   <Image
                     src={findCellVillagerImage(getGridCellIndex(rowIndex - 2, colIndex - 2))!}
                     alt=""
-                    className="w-auto h-full"
+                    className="w-full h-auto object-contain"
                     width={130}
                     height={130}
                   />
                 }
       
                 {/* Score counter */}
-                {getCurrentCellVillagerCount(rowIndex - 2, colIndex - 2)(gridObject) > 0 &&
-                  <div className="c-grid__scores flex gap-1 text-black right-2 top-2 absolute">
+                {villagerCount > 0 &&
+                  <div className="c-grid__scores flex text-black gap-0.5 right-1 -top-1 absolute">
                     <ScoreContainer
                       maxScore={determineCellMaxScore(rowIndex - 2, colIndex - 2)}
                       currentScore={determineCellScore(rowIndex - 2, colIndex - 2)!}
+                      onlyOne={villagerCount === 1}
                     />
                   </div>
                 }

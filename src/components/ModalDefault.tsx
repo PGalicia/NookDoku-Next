@@ -20,10 +20,14 @@ import type { RootState } from '@/redux/store'
 // Components
 import Image from 'next/image'
 import AutocompleteDefault from '@/components/AutocompleteDefault'
+import ScoreContainer from '@/components/ScoreContainer'
+import ButtonDefault from '@/components/ButtonDefault'
 
 // Utilities
 import parsedCategory from '@/utilities/parsedCategory'
-import createArrayRange from '@/utilities/createArrayRange'
+
+// Styles
+import styles from '@/styles/componentModal.module.scss'
 
 export default function ModalDefault () {
   /**
@@ -140,98 +144,103 @@ export default function ModalDefault () {
       onClick={() => onCloseClick()}
     >
       <div
-        className="min-w-auto md:min-w-[500px] flex flex-col relative h-full overflow-hidden bg-white text-black p-4 rounded-lg w-full sm:w-auto"
+        className={`${styles['c-modal__container']} min-w-auto md:min-w-[500px] flex flex-col relative h-full overflow-hidden bg-white text-black w-full sm:w-auto border-primary border-4`}
         onClick={e => e.stopPropagation()}
       >
-        {/* Close button */}
-        <div
-          className="absolute w-8 h-8 rounded-lg bg-gray-700 cursor-pointer top-4 right-4"
-          onClick={() => onCloseClick()}
-        />
-        {/* Modal title */}
-        <div className="font-bold text-base">
-          Pick a villager
-        </div>
-        {/* Modal category */}
-        {
-          (rowAndColCategories()?.rowCategory?.value || rowAndColCategories()?.colCategory?.value) &&
-          <div>
-            Category: {parsedCategory(rowAndColCategories()?.rowCategory?.value)} / {parsedCategory(rowAndColCategories()?.colCategory?.value)}
-          </div>
-        }
-
-        {/* Score counter */}
-        <div>
-          <div className="mr-4">
-            Counter:
+        {/* Modal header */}
+        <div className="bg-secondary border-b-4 border-solid border-primary py-2 px-4 flex justify-between">
+          {/* Modal title */}
+          <div className="font-mono uppercase font-bold text-base">
+            Pick a villager
           </div>
 
-          <div className="flex gap-1">
-            {createArrayRange(getCurrentMaxScore()).map((scoreIndex) => {
-              return (
-              <div key={scoreIndex}>
-                <div className={`rounded-full w-4 h-4 ${scoreIndex >= currentScore() ? 'bg-red-500' : 'bg-green-500'}`} />
-              </div>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* Hint buttons */}
-        <div className="flex px-0 py-2">
-          <div className="mr-4">
-            Hint:
-          </div>
-          <button
-            disabled={disableVillagerImageHint()}
-            onClick={() => showVillagerHint()}
+          {/* Close button */}
+          <div
+            className="w-8 cursor-pointer hover:text-white text-right"
+            onClick={() => onCloseClick()}
           >
-            Show possible villagers
-          </button>
+            x
+          </div>
+        </div>
+
+        {/* Modal main */}
+        <div className="p-4 font-mono text-sm flex flex-col gap-2">
+          {/* Modal category */}
+          {
+            (rowAndColCategories()?.rowCategory?.value || rowAndColCategories()?.colCategory?.value) &&
+            <div>
+              Category: <span className="font-bold">{parsedCategory(rowAndColCategories()?.rowCategory?.value)}</span> / <span className="font-bold">{parsedCategory(rowAndColCategories()?.colCategory?.value)}</span>
+            </div>
+          }
+
+          {/* Score counter */}
+          <div className="flex">
+            <div className="mr-4">
+              Counter:
+            </div>
+
+            <div className="flex gap-1 items-center">
+              <ScoreContainer
+                maxScore={getCurrentMaxScore()}
+                currentScore={currentScore()}
+              />
+            </div>
+          </div>
+
+          {/* Hint buttons */}
+          <div className="flex flex-col gap-2 px-0 py-2">
+            <div>
+              Hint:
+            </div>
+            <ButtonDefault
+              buttonText="Show possible villagers"
+              onClick={() => showVillagerHint()}
+              isDisabled={disableVillagerImageHint()}
+            />
+            {
+              isVillagerHintShowing() &&
+              <ButtonDefault
+                buttonText="Show name hint"
+                onClick={() => showNameHint()}
+                isDisabled={disableVillagerNameHint()}
+              />
+            }
+          </div>
+
+          {/* Villager image/name hint */}
           {
             isVillagerHintShowing() &&
-            <button
-              disabled={disableVillagerNameHint()}
-              className="ml-2"
-              onClick={() => showNameHint()}
-            >
-              Show name hint
-            </button>
-          }
-        </div>
-
-        {/* Villager image/name hint */}
-        {
-          isVillagerHintShowing() &&
-          <div className="max-h-[200px] flex overflow-x-auto overflow-y-hidden gap-1 flex-shrink-0 py-4 px-0">
-          {getValidVillagers().map((villager) => {
-            return (
-              <div
-                key={villager.name}
-                className="flex flex-col"
-              >
-                {/* Villager image hint */}
-                <div className="w-[80px] h-[100px] bg-blue-300 flex basis-[100px] flex-shrink-0 flex-grow-0 rounded-lg justify-center">
-                  <Image
-                    src={villager.image_url}
-                    alt="villager image"
-                    className="h-full w-auto p-1"
-                    width={130}
-                    height={130}
-                  />
-                </div>
-                {/* Villager name hint */}
-                {
-                  isVillagerNameShowing() &&
-                  <div className="text-center flex-grow-0">
-                    {updateVillagerNameToBeAHint(villager.name)}
+            <div className="max-h-[200px] flex overflow-x-auto overflow-y-hidden gap-2 flex-shrink-0 py-4 px-0">
+              {getValidVillagers().map((villager) => {
+                return (
+                  <div
+                    key={villager.name}
+                    className="flex flex-col"
+                  >
+                    {/* Villager image hint */}
+                    <div className="w-[80px] h-[100px] bg-white border-2 border-primary flex basis-[100px] flex-shrink-0 flex-grow-0 rounded-lg justify-center">
+                      <Image
+                        src={villager.image_url}
+                        alt="villager image"
+                        className="h-full w-auto p-2"
+                        width={130}
+                        height={130}
+                      />
+                    </div>
+                    {/* Villager name hint */}
+                    {
+                      isVillagerNameShowing() &&
+                      <div className="text-center flex-grow-0 mt-2 tracking-widest font-mono">
+                        {updateVillagerNameToBeAHint(villager.name)}
+                      </div>
+                    }
                   </div>
-                }
-              </div>
-            )
-          })}
-          </div>
-        }
+                )
+              })}
+            </div>
+          }
+
+        </div>
 
         {/* Villager name input */}
         <AutocompleteDefault />

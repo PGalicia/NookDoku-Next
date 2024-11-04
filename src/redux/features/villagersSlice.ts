@@ -12,6 +12,7 @@ import {
   addToGridObject,
   markGridAsReady,
   updatePlayerScore,
+  updateCurrentGameMaxScore,
   addToSelectedAnswers,
   getGridCellIndex
 } from '@/redux/features/gridObjectSlice'
@@ -66,9 +67,11 @@ export const villagers = createSlice({
     }
   },
   extraReducers: (builder) => {
-    // builder.addCase(setupVillagerStore.fulfilled, (state, villagersData: PayloadAction<VillagerType[]>) => {
-    builder.addCase(setupVillagerStore.fulfilled, (_, newState: PayloadAction<any>) => {
-      return newState.payload
+    builder.addCase(setupVillagerStore.fulfilled, (state, newState: PayloadAction<any>) => {
+      return {
+        ...state,
+        ...newState.payload
+      }
     }),
     builder.addCase(fillInVillagerStats.fulfilled, (state, selectedAnswers: PayloadAction<SelectedAnwerType[]>) => {
       // If villager stats is already setup, no need to re-setup again
@@ -77,7 +80,7 @@ export const villagers = createSlice({
       }
 
       // Grab the stringify json object in the local storage
-      let villagerStatsRaw = localStorage.getItem(LOCAL_STORAGE_KEY)
+      let villagerStatsRaw = localStorage.getItem(LOCAL_STORAGE_KEY);
 
       // If the object is not there...
       if (!villagerStatsRaw) {
@@ -121,21 +124,26 @@ export const villagers = createSlice({
 
 export const setupVillagerStore = createAsyncThunk(
   'villagers/setupVillagerStore',
-  async (_, { dispatch, getState }) => {
+  async (_, { dispatch }) => {
     let villagersData = villagerData
 
-    await fetch('https://api.nookipedia.com/villagers', {
-      headers: {
-        'X-API-KEY': `${process.env.NEXT_PUBLIC_NOOKEIPEDIA_API_KEY}`
-      }
-    })
-      .then(response => response.json())
-      .then((data) => {
-        villagersData = data
+    // Only call fetch if in production
+    if (process.env.NEXT_PUBLIC_IS_DEV !== 'true') {
+      await fetch('https://api.nookipedia.com/villagers', {
+        headers: {
+          'X-API-KEY': `${process.env.NEXT_PUBLIC_NOOKEIPEDIA_API_KEY}`
+        }
       })
-      .catch(() => {
-        villagersData = villagerData
-      })
+        .then(response => response.json())
+        .then((data) => {
+          villagersData = data
+        })
+        .catch(() => {
+          villagersData = villagerData
+        }) 
+    } else {
+      console.log('In development mode');
+    }
 
     // Valid and Invalid media
     const validMedia: string[] = []
@@ -294,12 +302,12 @@ export const setupVillagerStore = createAsyncThunk(
     }
 
     // Update grid state
-    dispatch(addToGridObject(gridObjectList))
-    dispatch(markGridAsReady())
-    dispatch(updatePlayerScore(totalPlayerScore))
+    dispatch(addToGridObject(gridObjectList));
+    dispatch(markGridAsReady());
+    dispatch(updatePlayerScore(totalPlayerScore));
+    dispatch(updateCurrentGameMaxScore(totalPlayerScore));
 
     return {
-      villagerStats: [],
       allVillagersData: villagersData,
       gridCategories
     }

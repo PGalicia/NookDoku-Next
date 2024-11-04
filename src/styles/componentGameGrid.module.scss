@@ -1,12 +1,34 @@
 .c-grid {
   $cellSizeWidth: 125px;
+  $cellSizeHeight: $cellSizeWidth;
+  $cellSizeWidthMobile: 90px;
+  $cellSizeHeightMobile: 120px;
 
-  grid-template-columns: repeat(4, $cellSizeWidth);
-  left: unset;
-  transform: unset;
+  grid-template-columns: 25px repeat(3, $cellSizeWidthMobile);
 
   @screen sm {
-    left: 50%;
-    transform: translateX(calc(-50% - calc($cellSizeWidth / 2)));
+    grid-template-columns: repeat(4, $cellSizeWidth);
+  }
+
+  .c-grid__cell {
+    aspect-ratio: 3 / 4;
+
+    @screen sm {
+      aspect-ratio: 1;
+    }
+  }
+
+  .c-grid__rowCat {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    height: $cellSizeHeightMobile;
+    text-align: center;
+
+    @screen sm {
+      writing-mode: horizontal-tb;
+      transform: rotate(0deg);
+      height: $cellSizeHeight;
+      text-align: left;
+    }
   }
 }
