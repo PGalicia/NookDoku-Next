@@ -1,0 +1,7 @@
+.c-modal__container {
+  border-radius: 0;
+
+  @screen sm {
+    border-radius: 0.5rem;
+} 
+}

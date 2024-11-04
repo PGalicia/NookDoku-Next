@@ -64,7 +64,8 @@ const initialState = {
   selectedAnswers: [] as SelectedAnwerType[],
   isGridFilledIn: false,
   isGridSetup: false,
-  currentPlayerScore: 0
+  currentPlayerScore: 0,
+  currentGameMaxScore: 0
 }
 
 /**
@@ -87,8 +88,6 @@ export const gridObject = createSlice({
       if (targetGridObject) {
         state.gridObject = _showHint(gridObject, targetGridObject)
       }
-
-      return state
     },
     showCellHintNamesOnCurrentSelectedCell: (state) => {
       const { gridObject, currentlySelectedCell } = state
@@ -97,8 +96,6 @@ export const gridObject = createSlice({
       if (targetGridObject) {
         state.gridObject = _showHint(gridObject, targetGridObject, false)
       }
-
-      return state
     },
     decreaseScoreOnCurrentSelectedCell: (state) => {
       const { gridObject, currentlySelectedCell } = state
@@ -141,6 +138,9 @@ export const gridObject = createSlice({
     },
     updatePlayerScore: (state, score: PayloadAction<number>) => {
       state.currentPlayerScore = score.payload
+    },
+    updateCurrentGameMaxScore: (state, score: PayloadAction<number>) => {
+      state.currentGameMaxScore = score.payload
     }
   }
 })
@@ -185,6 +185,7 @@ export const {
   updateFillInGridStatus,
   addToSelectedAnswers,
   markGridAsReady,
-  updatePlayerScore
+  updatePlayerScore,
+  updateCurrentGameMaxScore
 } = gridObject.actions
 export default gridObject.reducer

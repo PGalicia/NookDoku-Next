@@ -4,7 +4,19 @@
 // Utilities
 import createArrayRange from '@/utilities/createArrayRange'
 
-export default function ScoreContainer({ maxScore, currentScore }: { maxScore: number, currentScore: number }) {
+interface ScoreContainerProps {
+  maxScore: number;
+  currentScore: number;
+  onlyOne?: boolean;
+}
+
+export default function ScoreContainer({ maxScore, currentScore, onlyOne = false }: ScoreContainerProps) {
+  /**
+   * Variables
+   */
+  // Will determine which border color to use based on onlyOne param
+  const borderColor = onlyOne ? 'border-secondary' : 'border-white';
+
   /**
    * Methods
    */
@@ -22,7 +34,7 @@ export default function ScoreContainer({ maxScore, currentScore }: { maxScore: n
           return (
             <div
               key={`Score: ${scoreIndex}`}
-              className={`rounded-full h-2 w-2 ${extraScoreClassNames(scoreIndex, currentScore)}`}
+              className={`rounded-full h-3 w-3 border-2 ${extraScoreClassNames(scoreIndex, currentScore)} ${borderColor}`}
             />
           )
         })

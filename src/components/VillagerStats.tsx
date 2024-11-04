@@ -23,7 +23,7 @@ export default function VillagerStats() {
       dispatch(fillInVillagerStats())
     },
     [dispatch]
-  )
+  );
 
   /**
    * Methods
@@ -38,7 +38,7 @@ export default function VillagerStats() {
   return (
     <div className="c-villagerStats">
       {
-        villagerStats.map((villager, index) => (
+        villagerStats && villagerStats.map((villager, index) => (
           <div
             key={index}
             className="grid grid-cols-[min-content_minmax(0,_1fr)] gap-2 bg-gray-300 m-2 p-2 rounded"

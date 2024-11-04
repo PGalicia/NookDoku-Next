@@ -1,3 +1,12 @@
 export default function HeaderDefault () {
-  return <h1 className="text-2xl font-bold p-3">NookDoku</h1>
+  return (
+    <div>
+      {/* Title */}
+      <h1 className="text-4xl font-mono text-white uppercase font-bold py-6 px-4">NookDoku</h1>
+
+      {/* How to play button */}
+
+      {/* Donat button */}
+    </div>
+  );
 }

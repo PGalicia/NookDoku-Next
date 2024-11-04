@@ -158,14 +158,14 @@ export default function AutocompleteDefault() {
       <input
         ref={inputField}
         value={inputText}
-        className="h-12 w-full text-base rounded py-4 px-2 border-black/10 border-2 border-solid"
+        className="h-12 text-base rounded py-4 px-2 border-black/10 border-2 border-solid mx-4"
         placeholder="Villager name"
         onChange={onInputUpdate}
         onKeyDown={onKeyPressEvent}
       />
 
       {/* Suggestion list */}
-      <ul className="h-full rounded-lg bg-white text-black py-4 px-0 overflow-y-scroll list-none">
+      <ul className="h-full rounded-lg bg-white text-black py-4 px-0 overflow-y-scroll list-none font-mono mx-4">
         {resultList().map((suggestion, index) => (
           <li
             key={`${suggestion}-${index}`}
