@@ -12,16 +12,6 @@ export default function VillagerStats() {
   const villagerStats = useSelector((state: RootState) => state.villagersReducer.villagerStats).slice(0, 3);
   const allVillagersData = useSelector((state: RootState) => state.villagersReducer.allVillagersData);
 
-  function sizeClassBasedOnRank (rank: number): string {
-    if (rank === 1) {
-      return 'scale-125';
-    } else if (rank === 2) {
-      return 'scale-110';
-    } else {
-      return '';
-    }
-  }
-
   /**
    * Methods
    */
@@ -32,6 +22,9 @@ export default function VillagerStats() {
       ?.image_url || ''
   }
 
+  // Format the count to adhere to the design
+  // For example, if count is 12 we want to covert it to an array of string and prepend it the right amount of zeroes
+  // (ie ['0','0','0','0','0','0','12'])
   function reformatCount (count: number): string[] {
     const maxChar = 8;
     const countCharLength = count.toString().length;
@@ -45,7 +38,9 @@ export default function VillagerStats() {
 
   return (
     <div className="mx-auto rounded font-mono p-4 w-fit">
+      {/* Title */}
       <div className="uppercase font-bold text-white mb-2">Most used villagers</div>
+
       <div className="flex gap-2 justify-between">
         {
           villagerStats && villagerStats.map((villager, index) => (
@@ -53,6 +48,7 @@ export default function VillagerStats() {
               key={index}
               className={`flex flex-col gap-1 w-[96px]`}
             >
+              {/* IMage */}
               <div className="w-100 aspect-[3/4] overflow-hidden border-white border-2 rounded">
                 {
                   grabVillagerImage(villager.name) &&
@@ -68,6 +64,7 @@ export default function VillagerStats() {
                 }
               </div>
 
+            {/* Stats */}
               <div className="uppercase font-bold flex justify-between">
                 {
                   reformatCount(villager.count).map((num, index) => (
