@@ -22,6 +22,7 @@ export type VillagerType = {
 }
 
 export type VillagerStatsType = {
+  id: string,
   name: string,
   count: number
 }

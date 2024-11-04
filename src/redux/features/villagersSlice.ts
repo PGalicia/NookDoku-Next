@@ -7,7 +7,6 @@ import {
   createAsyncThunk,
   PayloadAction
 } from '@reduxjs/toolkit'
-import type { RootState } from '@/redux/store'
 import {
   addToGridObject,
   markGridAsReady,
@@ -68,24 +67,14 @@ export const villagers = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(setupVillagerStore.fulfilled, (state, newState: PayloadAction<any>) => {
-      return {
-        ...state,
-        ...newState.payload
-      }
-    }),
-    builder.addCase(fillInVillagerStats.fulfilled, (state, selectedAnswers: PayloadAction<SelectedAnwerType[]>) => {
-      // If villager stats is already setup, no need to re-setup again
-      if (state.villagerStats.length > 0) {
-        return
-      }
-
       // Grab the stringify json object in the local storage
       let villagerStatsRaw = localStorage.getItem(LOCAL_STORAGE_KEY);
 
       // If the object is not there...
       if (!villagerStatsRaw) {
         // Grab the entirety of the villagers and update it so that each object would contain a name and count property
-        const parsedVillagerData: VillagerStatsType[] = state.allVillagersData.map(({ name }) => ({
+        const parsedVillagerData: VillagerStatsType[] = (newState.payload.allVillagersData as VillagerType[]).map(({ id, name }) => ({
+          id,
           name,
           count: 0
         }))
@@ -100,21 +89,12 @@ export const villagers = createSlice({
       // Parse the stringify json object
       const villagerStatsProcessed = JSON.parse(villagerStatsRaw as string)
 
-      // Loop through each selectedAnswers...
-      selectedAnswers.payload.forEach((answer) => {
-        // Grab the target villager based on the name
-        const villagerName = answer.villager.name
-        const targetVillager = villagerStatsProcessed.find((villager: VillagerStatsType) => villager.name.toLowerCase() === villagerName.toLowerCase())
-
-        // Increase the count of that targeted villager
-        targetVillager.count += 1
-      })
-
       // Update the object in the local storage
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(villagerStatsProcessed))
 
       return {
         ...state,
+        ...newState.payload,
         // Set the villager object to 'villagerStats' to be displayed and sort it from highest to lowest count
         villagerStats: villagerStatsProcessed.sort((a: VillagerStatsType, b: VillagerStatsType) => b.count - a.count)
       }
@@ -311,13 +291,6 @@ export const setupVillagerStore = createAsyncThunk(
       allVillagersData: villagersData,
       gridCategories
     }
-  }
-)
-
-export const fillInVillagerStats = createAsyncThunk(
-  'villagers/fillInVillagerStats',
-  (_, { getState }) => {
-    return (getState() as RootState).gridObjectReducer.selectedAnswers;
   }
 )
 
