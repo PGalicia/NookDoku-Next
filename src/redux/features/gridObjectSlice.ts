@@ -64,6 +64,7 @@ const initialState = {
   selectedAnswers: [] as SelectedAnwerType[],
   isGridFilledIn: false,
   isGridSetup: false,
+  hasGameStarted: false,
   currentPlayerScore: 0,
   currentGameMaxScore: 0
 }
@@ -127,6 +128,27 @@ export const gridObject = createSlice({
         state.gridObject = gridObjectCopy
       }
     },
+    markThatTheTargetGridObjectIsComplete: (state) => {
+      const { gridObject, currentlySelectedCell } = state
+      const targetGridObject: GridObjectType | null = _getGridObjectBasedOnCellIndex(currentlySelectedCell, gridObject)
+
+      if (!targetGridObject) {
+        return
+      }
+
+      const { row: targetRow, col: targetCol } = targetGridObject
+      const gridObjectCopy = gridObject
+      const targetIndex = gridObjectCopy.findIndex(({ row, col }) => row === targetRow && col === targetCol)
+
+      if (targetIndex !== -1) {
+        // Mark that the cell is completed
+        targetGridObject.isComplete = true
+  
+        gridObjectCopy[targetIndex] = targetGridObject
+  
+        state.gridObject = gridObjectCopy
+      }
+    },
     updateFillInGridStatus: (state, status: PayloadAction<boolean>) => {
       state.isGridFilledIn = status.payload
     },
@@ -135,6 +157,9 @@ export const gridObject = createSlice({
     },
     markGridAsReady: (state) => {
       state.isGridSetup = true
+    },
+    markGameHasStarted: (state) => {
+      state.hasGameStarted = true
     },
     updatePlayerScore: (state, score: PayloadAction<number>) => {
       state.currentPlayerScore = score.payload
@@ -182,7 +207,9 @@ export const {
   decreaseScoreOnCurrentSelectedCell,
   updateFillInGridStatus,
   addToSelectedAnswers,
+  markGameHasStarted,
   markGridAsReady,
+  markThatTheTargetGridObjectIsComplete,
   updatePlayerScore,
   updateCurrentGameMaxScore
 } = gridObject.actions

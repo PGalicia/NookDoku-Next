@@ -7,9 +7,11 @@ import { AppDispatch } from '@/redux/store'
 import {
   getGridObjectBasedOnCellIndex,
   decreaseScoreOnCurrentSelectedCell,
-  addToSelectedAnswers
-  } from '@/redux/features/gridObjectSlice'
-import { increaseVillagerStat } from '@/redux/features/villagersSlice'
+  addToSelectedAnswers,
+  markGameHasStarted,
+  markThatTheTargetGridObjectIsComplete
+} from '@/redux/features/gridObjectSlice'
+import { increaseGamesPlayedStat, increaseVillagerStat } from '@/redux/features/villagersSlice'
 import { closePickAVillagerModal } from '@/redux/features/modalSlice'
 
 // Types
@@ -36,6 +38,7 @@ export default function AutocompleteDefault() {
    */
   const allVillagersData = useSelector((state: RootState) => state.villagersReducer.allVillagersData)
   const gridObject = useSelector((state: RootState) => state.gridObjectReducer.gridObject)
+  const hasGameStarted = useSelector((state: RootState) => state.gridObjectReducer.hasGameStarted)
   const currentlySelectedCell = useSelector((state: RootState) => state.gridObjectReducer.currentlySelectedCell)
   const dispatch = useDispatch<AppDispatch>()
 
@@ -111,16 +114,22 @@ export default function AutocompleteDefault() {
       // Increase the villager count
       dispatch(increaseVillagerStat(targetVillager.name))
 
-      // Close Pick a villager modal
-      dispatch(closePickAVillagerModal())
+      // Perform actions needed to close the modal
+      closeModalActions()
     } else {
       // If the user chose a wrong answer then decrease their points
       dispatch(decreaseScoreOnCurrentSelectedCell())
 
-      // If the currentScore reaches zero, then close the Pick a villager modal
+      // If the currentScore reaches zero, perform actions needed to close the modal
       if ((targetGridObject?.currentScore - 1) <= 0) {
-        dispatch(closePickAVillagerModal())
+        closeModalActions();
       }
+    }
+
+    // Increase games played count at the beginning of the game
+    if (!hasGameStarted) {
+      dispatch(markGameHasStarted())
+      dispatch(increaseGamesPlayedStat())
     }
   }
 
@@ -151,6 +160,15 @@ export default function AutocompleteDefault() {
 
     // Return the parsed villager name
     return splitString
+  }
+
+  // Actions needed when closing the modal
+  function closeModalActions () {
+    // Mark that the currently selected cell is completed
+    dispatch(markThatTheTargetGridObjectIsComplete());
+
+    // Close Pick a villager modal
+    dispatch(closePickAVillagerModal());
   }
 
   return (

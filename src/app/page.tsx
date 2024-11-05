@@ -22,6 +22,7 @@ export default function Home() {
    * Redux
    */
   const isGridSetup = useSelector((state: RootState) => state.gridObjectReducer.isGridSetup);
+  const isGridFilledIn = useSelector((state: RootState) => state.gridObjectReducer.isGridFilledIn);
   const currentPlayerScore = useSelector((state: RootState) => state.gridObjectReducer.currentPlayerScore);
   const currentGameMaxScore = useSelector((state: RootState) => state.gridObjectReducer.currentGameMaxScore);
   const isPickAVillagerModalActive = useSelector((state: RootState) => state.modalReducer.isPickAVillagerModalActive);
