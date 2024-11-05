@@ -5,8 +5,8 @@
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 
 // Types
-import type { GridObjectType } from '@/types/GridObjectType'
-import type { SelectedAnwerType } from '@/types/SelectedAnwerType'
+import type { GridObjectType } from '@/types/GridObjectType';
+import type { SelectedAnwerType } from '@/types/SelectedAnwerType';
 
 // Constants
 import CELL_INDEX_MAPPING from '@/constants/CellIndexMapping'

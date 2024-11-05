@@ -4,17 +4,18 @@
 interface ButtonDefaultProps {
   buttonText: string;
   onClick: () => void;
+  extraClasses?: string;
   isSecondary?: boolean;
   isDisabled?: boolean;
 }
 
-export default function ButtonDefault ({ buttonText, onClick, isSecondary = false, isDisabled = false }: ButtonDefaultProps) {
+export default function ButtonDefault ({ buttonText, onClick, isSecondary = false, isDisabled = false, extraClasses = '' }: ButtonDefaultProps) {
   // Adjust button classes based on if secondary or disabled
   const backgroundColor = isSecondary ? 'bg-white' : 'bg-primary';
   const borderClasses = 'border-2 border-primary';
   const textColor = isSecondary ? 'text-primary' : 'text-white';
   const hoverColor = isSecondary
-    ? 'hover:bg-primary hover:text-white'
+    ? 'hover:bg-primary hover:text-white hover:border-white'
     : 'hover:bg-white hover:text-primary';
   const defaultClasses = 'text-center p-2 rounded font-bold transition-colors';
 
@@ -24,7 +25,7 @@ export default function ButtonDefault ({ buttonText, onClick, isSecondary = fals
 
   return (
     <button
-      className={buttonClasses}
+      className={`${buttonClasses} ${extraClasses}`}
       disabled={isDisabled}
       onClick={onClick}
     >

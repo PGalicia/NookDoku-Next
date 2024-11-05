@@ -29,7 +29,6 @@ export type VillagerStatsType = {
 
 export type GameStatsType = {
   highScore: number;
-  resetsUsed: number;
   gamesFinished: number;
   gamesPlayed: number;
   villagers: VillagerStatsType[];

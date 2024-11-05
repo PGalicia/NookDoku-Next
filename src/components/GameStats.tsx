@@ -91,14 +91,6 @@ export default function GameStats () {
           </div>
           <div>Games finished</div>
         </div>
-
-        {/* Number of resets */}
-        <div className="text-center text-white w-full">
-          <div className="font-bold text-5xl">
-            <Counter count={gameStats.resetsUsed} maxChar={3} />
-          </div>
-          <div>Resets used</div>
-        </div>
       </div>
 
       {/* Most used villagers */}
