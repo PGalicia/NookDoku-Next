@@ -10,7 +10,7 @@ import {
   addToSelectedAnswers
   } from '@/redux/features/gridObjectSlice'
 import { increaseVillagerStat } from '@/redux/features/villagersSlice'
-import { closeModal } from '@/redux/features/modalSlice'
+import { closePickAVillagerModal } from '@/redux/features/modalSlice'
 
 // Types
 import type { VillagerType } from '@/types/VillagerType'
@@ -111,15 +111,15 @@ export default function AutocompleteDefault() {
       // Increase the villager count
       dispatch(increaseVillagerStat(targetVillager.name))
 
-      // Close the modal
-      dispatch(closeModal())
+      // Close Pick a villager modal
+      dispatch(closePickAVillagerModal())
     } else {
       // If the user chose a wrong answer then decrease their points
       dispatch(decreaseScoreOnCurrentSelectedCell())
 
-      // If the currentScore reaches zero, then close the modal
+      // If the currentScore reaches zero, then close the Pick a villager modal
       if ((targetGridObject?.currentScore - 1) <= 0) {
-        dispatch(closeModal())
+        dispatch(closePickAVillagerModal())
       }
     }
   }

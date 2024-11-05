@@ -1,0 +1,19 @@
+.c-gameStats {
+  $statsCellWidth: 6rem;
+
+  .c-gameStats__main {
+    grid-template-columns: repeat(2, $statsCellWidth);
+
+    @screen sm {
+      grid-template-columns: repeat(4, $statsCellWidth);
+    }
+  }
+
+  .c-gameStats__used {
+    grid-template-columns: repeat(3, $statsCellWidth);
+
+    @screen sm {
+      grid-template-columns: repeat(5, $statsCellWidth);
+    }
+  }
+}

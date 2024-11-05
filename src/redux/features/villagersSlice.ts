@@ -13,12 +13,11 @@ import {
   updatePlayerScore,
   updateCurrentGameMaxScore,
   addToSelectedAnswers,
-  getGridCellIndex
+  getGridCellIndex,
 } from '@/redux/features/gridObjectSlice'
 
 // Types
-import type { VillagerType, VillagerStatsType } from '@/types/VillagerType'
-import type { SelectedAnwerType } from '@/types/SelectedAnwerType'
+import type { VillagerType, VillagerStatsType, GameStatsType } from '@/types/VillagerType'
 import type { CategoryType } from '@/types/CategoryType'
 import type { CategoriesType } from '@/types/CategoriesType'
 import type { GridObjectType } from '@/types/GridObjectType'
@@ -37,7 +36,7 @@ import randomElement from '@/utilities/randomElement'
  */
 const initialState = {
   allVillagersData: [] as VillagerType[],
-  villagerStats: [] as VillagerStatsType[],
+  gameStats: {} as GameStatsType,
   gridCategories: {} as CategoriesType
 }
 
@@ -49,54 +48,71 @@ export const villagers = createSlice({
   initialState,
   reducers: {
     increaseVillagerStat: (state, villagerName: PayloadAction<string>) => {
+      const gameStatsCopy = { ...state.gameStats };
+
       // Grab target villager based on their name
-      const targetVillager = state.villagerStats.find(villager => villager.name.toLowerCase() === villagerName.payload.toLowerCase())
+      const targetVillager = gameStatsCopy.villagers.find(villager => villager.name.toLowerCase() === villagerName.payload.toLowerCase());
   
       // If the target villager exists...
       if (targetVillager) {
         // Increase villager use count
-        targetVillager.count++
+        targetVillager.count++;
+
+        // Sort game stats villagers based on count
+        gameStatsCopy.villagers.sort((a: VillagerStatsType, b: VillagerStatsType) => b.count - a.count);
   
         // Stringify the object and set it to the local storage
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state.villagerStats))
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gameStatsCopy));
 
-        // Update villagerStats
-        state.villagerStats = state.villagerStats.sort((a: VillagerStatsType, b: VillagerStatsType) => b.count - a.count)
+        // Update gameStats
+        state.gameStats = gameStatsCopy;
       }
     }
   },
   extraReducers: (builder) => {
     builder.addCase(setupVillagerStore.fulfilled, (state, newState: PayloadAction<any>) => {
       // Grab the stringify json object in the local storage
-      let villagerStatsRaw = localStorage.getItem(LOCAL_STORAGE_KEY);
+      let gameStatsRaw = localStorage.getItem(LOCAL_STORAGE_KEY);
 
       // If the object is not there...
-      if (!villagerStatsRaw) {
+      if (!gameStatsRaw) {
         // Grab the entirety of the villagers and update it so that each object would contain a name and count property
         const parsedVillagerData: VillagerStatsType[] = (newState.payload.allVillagersData as VillagerType[]).map(({ id, name }) => ({
           id,
           name,
           count: 0
-        }))
+        }));
+
+        // Placed the villager data in the game data object
+        const formattedGameStats = {
+          highScore: 0,
+          resetsUsed: 0,
+          gamesFinished: 0,
+          gamesPlayed: 0,
+          villagers: parsedVillagerData 
+        }
 
         // Stringify the object and set it to the local storage
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(parsedVillagerData))
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formattedGameStats));
 
         // Grab the stringfy json object
-        villagerStatsRaw = JSON.stringify(parsedVillagerData)
+        gameStatsRaw = JSON.stringify(formattedGameStats)
       }
 
       // Parse the stringify json object
-      const villagerStatsProcessed = JSON.parse(villagerStatsRaw as string)
+      const gameStatsProcessed: GameStatsType = JSON.parse(gameStatsRaw as string);
+
+      // Sort villagers from highest to lowest count
+      gameStatsProcessed.villagers.sort((a: VillagerStatsType, b: VillagerStatsType) => b.count - a.count)
 
       // Update the object in the local storage
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(villagerStatsProcessed))
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gameStatsProcessed));
 
       return {
         ...state,
         ...newState.payload,
-        // Set the villager object to 'villagerStats' to be displayed and sort it from highest to lowest count
-        villagerStats: villagerStatsProcessed.sort((a: VillagerStatsType, b: VillagerStatsType) => b.count - a.count)
+        // Set the villager object to 'gameStats' to be displayed
+        gameStats: gameStatsProcessed
       }
     })
   }
@@ -294,5 +310,7 @@ export const setupVillagerStore = createAsyncThunk(
   }
 )
 
-export const { increaseVillagerStat } = villagers.actions
+export const {
+  increaseVillagerStat
+} = villagers.actions
 export default villagers.reducer
