@@ -9,7 +9,7 @@ import React, { useEffect } from 'react'
 
 // Redux
 import { AppDispatch, RootState } from '@/redux/store'
-import { setupVillagerStore, increaseGamesFinishedStat } from '@/redux/features/villagersSlice'
+import { setupVillagerStore } from '@/redux/features/villagersSlice'
 
 // Components
 import GameStats from '@/components/GameStats'
@@ -38,16 +38,6 @@ export default function Home() {
     },
     [dispatch]
   );
-
-  // useEffect(
-  //   () => {
-  //     if (isGridSetup && isGridFilledIn) {
-  //       console.log('test here', isGridFilledIn, isGridSetup);
-  //       dispatch(increaseGamesFinishedStat());
-  //     }
-  //   },
-  //   [isGridSetup]
-  // );
 
   return (
     <main>

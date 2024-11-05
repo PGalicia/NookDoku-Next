@@ -12,9 +12,8 @@ import {
   markGridAsReady,
   updatePlayerScore,
   updateCurrentGameMaxScore,
-  updateFillInGridStatus,
   addToSelectedAnswers,
-  getGridCellIndex,
+  getGridCellIndex
 } from '@/redux/features/gridObjectSlice'
 
 // Types
@@ -83,63 +82,22 @@ export const villagers = createSlice({
     },
     increaseGamesFinishedStat: (state) => {
       const gameStatsCopy = { ...state.gameStats };
-
-      console.log('whats here', gameStatsCopy);
       
       // Increase game finished count
       gameStatsCopy.gamesFinished++;
 
-      // // Stringify the object and set it to the local storage
-      // localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gameStatsCopy));
+      // Stringify the object and set it to the local storage
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gameStatsCopy));
 
-      // // Update gameStats
-      // state.gameStats = gameStatsCopy;
+      // Update gameStats
+      state.gameStats = gameStatsCopy;
     }
   },
   extraReducers: (builder) => {
     builder.addCase(setupVillagerStore.fulfilled, (state, newState: PayloadAction<any>) => {
-      // // Grab the stringify json object in the local storage
-      // let gameStatsRaw = localStorage.getItem(LOCAL_STORAGE_KEY);
-
-      // // If the object is not there...
-      // if (!gameStatsRaw) {
-      //   // Grab the entirety of the villagers and update it so that each object would contain a name and count property
-      //   const parsedVillagerData: VillagerStatsType[] = (newState.payload.allVillagersData as VillagerType[]).map(({ id, name }) => ({
-      //     id,
-      //     name,
-      //     count: 0
-      //   }));
-
-      //   // Placed the villager data in the game data object
-      //   const formattedGameStats = {
-      //     highScore: 0,
-      //     resetsUsed: 0,
-      //     gamesFinished: 0,
-      //     gamesPlayed: 0,
-      //     villagers: parsedVillagerData 
-      //   }
-
-      //   // Stringify the object and set it to the local storage
-      //   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formattedGameStats));
-
-      //   // Grab the stringfy json object
-      //   gameStatsRaw = JSON.stringify(formattedGameStats)
-      // }
-
-      // // Parse the stringify json object
-      // const gameStatsProcessed: GameStatsType = JSON.parse(gameStatsRaw as string);
-
-      // // Sort villagers from highest to lowest count
-      // gameStatsProcessed.villagers.sort((a: VillagerStatsType, b: VillagerStatsType) => b.count - a.count)
-
-      // // Update the object in the local storage
-      // localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gameStatsProcessed));
-
       return {
         ...state,
-        ...newState.payload,
-        // // Set the villager object to 'gameStats' to be displayed
-        // gameStats: gameStatsProcessed
+        ...newState.payload
       }
     })
   }

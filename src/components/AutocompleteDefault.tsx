@@ -8,8 +8,9 @@ import {
   getGridObjectBasedOnCellIndex,
   decreaseScoreOnCurrentSelectedCell,
   addToSelectedAnswers,
-  markGameHasStarted
-  } from '@/redux/features/gridObjectSlice'
+  markGameHasStarted,
+  markThatTheTargetGridObjectIsComplete
+} from '@/redux/features/gridObjectSlice'
 import { increaseGamesPlayedStat, increaseVillagerStat } from '@/redux/features/villagersSlice'
 import { closePickAVillagerModal } from '@/redux/features/modalSlice'
 
@@ -113,15 +114,15 @@ export default function AutocompleteDefault() {
       // Increase the villager count
       dispatch(increaseVillagerStat(targetVillager.name))
 
-      // Close Pick a villager modal
-      dispatch(closePickAVillagerModal())
+      // Perform actions needed to close the modal
+      closeModalActions()
     } else {
       // If the user chose a wrong answer then decrease their points
       dispatch(decreaseScoreOnCurrentSelectedCell())
 
-      // If the currentScore reaches zero, then close the Pick a villager modal
+      // If the currentScore reaches zero, perform actions needed to close the modal
       if ((targetGridObject?.currentScore - 1) <= 0) {
-        dispatch(closePickAVillagerModal())
+        closeModalActions();
       }
     }
 
@@ -130,7 +131,6 @@ export default function AutocompleteDefault() {
       dispatch(markGameHasStarted())
       dispatch(increaseGamesPlayedStat())
     }
-    
   }
 
   // Split the given villager name to allow to be target for css styling
@@ -160,6 +160,15 @@ export default function AutocompleteDefault() {
 
     // Return the parsed villager name
     return splitString
+  }
+
+  // Actions needed when closing the modal
+  function closeModalActions () {
+    // Mark that the currently selected cell is completed
+    dispatch(markThatTheTargetGridObjectIsComplete());
+
+    // Close Pick a villager modal
+    dispatch(closePickAVillagerModal());
   }
 
   return (

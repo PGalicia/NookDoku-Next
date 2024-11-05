@@ -8,9 +8,11 @@ import {
   getGridCellIndex,
   getGridObjectBasedOnCellIndex,
   getCurrentCellVillagerCount,
-  updateSelectedCell
+  updateSelectedCell,
+  isGameComplete
 } from '@/redux/features/gridObjectSlice'
 import { openPickAVillagerModal } from '@/redux/features/modalSlice'
+import { increaseGamesFinishedStat } from '@/redux/features/villagersSlice'
 
 // Components
 import Image from 'next/image'
@@ -30,6 +32,7 @@ import { GRID_SIZE } from '@/constants/GridSettings'
 // Utilities
 import parsedCategory from '@/utilities/parsedCategory'
 import createArrayRange from '@/utilities/createArrayRange'
+import { useEffect } from 'react'
 
 export default function GameGrid () {
   /**
@@ -45,6 +48,19 @@ export default function GameGrid () {
    */
   const gridCategoryHeightClass = 'min-h-[24px]'
   const gridLoadingColor = 'bg-white'
+
+  /**
+   * Hooks
+   */
+  useEffect(
+    () => {
+      // Increase game stats when game is complete
+      if (gridObject.length > 0 && isGameComplete(gridObject)) {
+        dispatch(increaseGamesFinishedStat());
+      }
+    },
+    [gridObject]
+  )
 
   /**
    * Methods
