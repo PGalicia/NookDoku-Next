@@ -200,7 +200,7 @@ export default function ModalPickAVillager () {
                       <Image
                         src={villager.image_url}
                         alt="villager image"
-                        className="h-full w-auto p-2"
+                        className="h-full w-auto p-2 object-contain"
                         width={130}
                         height={130}
                       />

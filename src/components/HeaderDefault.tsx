@@ -30,7 +30,6 @@ export default function HeaderDefault () {
         </button>
 
         {/* Donate button */}
-        {/* <div>Donate</div> */}
         <LinkDefault
           url="https://buymeacoffee.com/patrickgalicia"
           text="Donate ❤️"

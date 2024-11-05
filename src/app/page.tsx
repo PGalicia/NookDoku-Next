@@ -23,8 +23,8 @@ export default function Home() {
    * Redux
    */
   const isGridSetup = useSelector((state: RootState) => state.gridObjectReducer.isGridSetup);
+  const isGridFilledIn = useSelector((state: RootState) => state.gridObjectReducer.isGridFilledIn);
   const currentPlayerScore = useSelector((state: RootState) => state.gridObjectReducer.currentPlayerScore);
-  const currentGameMaxScore = useSelector((state: RootState) => state.gridObjectReducer.currentGameMaxScore);
   const isPickAVillagerModalActive = useSelector((state: RootState) => state.modalReducer.isPickAVillagerModalActive);
   const isHowToPlayModalActive = useSelector((state: RootState) => state.modalReducer.isHowToPlayModalActive);
   const dispatch = useDispatch<AppDispatch>();
@@ -57,13 +57,26 @@ export default function Home() {
         <div className="text-sm text-center mt-4 font-mono uppercase text-white">Setting up Game</div>
       }
 
+      {isGridFilledIn &&
+        <div className="mb-8 flex flex-col gap-2">
+          <div className="font-mono text-white text-xl font-bold uppercase text-center">
+            Final score: {currentPlayerScore}
+          </div>
+          <div className="font-mono text-white text-[10px] italic uppercase text-center px-4">
+            Checkout your stats below or refresh the page to play again!
+          </div>
+        </div>
+      }
+
+      {/* Current player score */}
+      {isGridSetup && !isGridFilledIn &&
+        <div className="font-mono text-white font-bold uppercase mb-8 text-center">
+          <span className="text-sm">Score:</span> {currentPlayerScore}
+        </div>
+      }
+
       {isGridSetup &&
         <div className="flex flex-col gap-2 items-center mt-4 mb-8 mx-4 w-100">
-          {/* Current player score */}
-          <div  className="font-mono text-white font-bold uppercase mb-8">
-            <span className="text-sm">Current score:</span> {currentPlayerScore} / {currentGameMaxScore}
-          </div>
-
           {/* Reset button */}
           <ButtonDefault
             buttonText="Reset game"
