@@ -26,3 +26,11 @@ export type VillagerStatsType = {
   name: string,
   count: number
 }
+
+export type GameStatsType = {
+  highScore: number;
+  resetsUsed: number;
+  gamesFinished: number;
+  gamesPlayed: number;
+  villagers: VillagerStatsType[];
+}

@@ -145,13 +145,11 @@ export const gridObject = createSlice({
   }
 })
 
-export const isGameComplete = createSelector(
-  (gridObject: GridObjectType[]) => gridObject,
-  (gridObject) => {
-  return gridObject.every(({ isComplete }: GridObjectType) => {
+export const isGameComplete = (gridObject: GridObjectType[]) => (
+  gridObject.every(({ isComplete }: GridObjectType) => {
     return isComplete
   })
-})
+)
 
 export const getGridCellIndex = (rowIndex: number, colIndex: number) => (
   _determineGridCellIndex(rowIndex, colIndex)

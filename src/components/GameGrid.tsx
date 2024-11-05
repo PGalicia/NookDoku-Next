@@ -10,7 +10,7 @@ import {
   getCurrentCellVillagerCount,
   updateSelectedCell
 } from '@/redux/features/gridObjectSlice'
-import { openModal } from '@/redux/features/modalSlice'
+import { openPickAVillagerModal } from '@/redux/features/modalSlice'
 
 // Components
 import Image from 'next/image'
@@ -98,8 +98,8 @@ export default function GameGrid () {
       // Mark the clicked cell as the currenly selected one
       dispatch(updateSelectedCell(index))
 
-      // Open modal
-      dispatch(openModal())
+      // Open "Pick a villager" modal
+      dispatch(openPickAVillagerModal())
     }
   }
 

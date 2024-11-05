@@ -8,7 +8,8 @@ import { createSlice } from "@reduxjs/toolkit";
  * Inital State
  */
 const initialState = {
-  isModalActive: false  
+  isPickAVillagerModalActive: false,
+  isHowToPlayModalActive: false
 }
 
 /**
@@ -18,14 +19,28 @@ const modal = createSlice({
   name: 'modal',
   initialState,
   reducers: {
-    openModal: (state) => {
-      state.isModalActive = true
+    // Pick a villager
+    openPickAVillagerModal: (state) => {
+      state.isPickAVillagerModalActive = true
     },
-    closeModal: (state) => {
-      state.isModalActive = false
+    closePickAVillagerModal: (state) => {
+      state.isPickAVillagerModalActive = false
+    },
+    
+    // How to play
+    openHowToPlayModal: (state) => {
+      state.isHowToPlayModalActive = true
+    },
+    closeHowToPlayModal: (state) => {
+      state.isHowToPlayModalActive = false
     }
   }
 })
 
-export const { openModal, closeModal } = modal.actions
+export const {
+  openPickAVillagerModal,
+  closePickAVillagerModal,
+  openHowToPlayModal,
+  closeHowToPlayModal
+} = modal.actions
 export default modal.reducer

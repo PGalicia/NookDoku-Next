@@ -4,10 +4,12 @@
   $cellSizeWidthMobile: 90px;
   $cellSizeHeightMobile: 120px;
 
+  position: relative;
   grid-template-columns: 25px repeat(3, $cellSizeWidthMobile);
 
   @screen sm {
     grid-template-columns: repeat(4, $cellSizeWidth);
+    left: calc($cellSizeWidth/-2);
   }
 
   .c-grid__cell {
