@@ -64,6 +64,7 @@ const initialState = {
   selectedAnswers: [] as SelectedAnwerType[],
   isGridFilledIn: false,
   isGridSetup: false,
+  hasGameStarted: false,
   currentPlayerScore: 0,
   currentGameMaxScore: 0
 }
@@ -136,6 +137,9 @@ export const gridObject = createSlice({
     markGridAsReady: (state) => {
       state.isGridSetup = true
     },
+    markGameHasStarted: (state) => {
+      state.hasGameStarted = true
+    },
     updatePlayerScore: (state, score: PayloadAction<number>) => {
       state.currentPlayerScore = score.payload
     },
@@ -182,6 +186,7 @@ export const {
   decreaseScoreOnCurrentSelectedCell,
   updateFillInGridStatus,
   addToSelectedAnswers,
+  markGameHasStarted,
   markGridAsReady,
   updatePlayerScore,
   updateCurrentGameMaxScore

@@ -9,7 +9,7 @@ import React, { useEffect } from 'react'
 
 // Redux
 import { AppDispatch, RootState } from '@/redux/store'
-import { setupVillagerStore } from '@/redux/features/villagersSlice'
+import { setupVillagerStore, increaseGamesFinishedStat } from '@/redux/features/villagersSlice'
 
 // Components
 import GameStats from '@/components/GameStats'
@@ -22,6 +22,7 @@ export default function Home() {
    * Redux
    */
   const isGridSetup = useSelector((state: RootState) => state.gridObjectReducer.isGridSetup);
+  const isGridFilledIn = useSelector((state: RootState) => state.gridObjectReducer.isGridFilledIn);
   const currentPlayerScore = useSelector((state: RootState) => state.gridObjectReducer.currentPlayerScore);
   const currentGameMaxScore = useSelector((state: RootState) => state.gridObjectReducer.currentGameMaxScore);
   const isPickAVillagerModalActive = useSelector((state: RootState) => state.modalReducer.isPickAVillagerModalActive);
@@ -37,6 +38,16 @@ export default function Home() {
     },
     [dispatch]
   );
+
+  // useEffect(
+  //   () => {
+  //     if (isGridSetup && isGridFilledIn) {
+  //       console.log('test here', isGridFilledIn, isGridSetup);
+  //       dispatch(increaseGamesFinishedStat());
+  //     }
+  //   },
+  //   [isGridSetup]
+  // );
 
   return (
     <main>

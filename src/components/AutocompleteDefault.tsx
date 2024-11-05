@@ -7,9 +7,10 @@ import { AppDispatch } from '@/redux/store'
 import {
   getGridObjectBasedOnCellIndex,
   decreaseScoreOnCurrentSelectedCell,
-  addToSelectedAnswers
+  addToSelectedAnswers,
+  markGameHasStarted
   } from '@/redux/features/gridObjectSlice'
-import { increaseVillagerStat } from '@/redux/features/villagersSlice'
+import { increaseGamesPlayedStat, increaseVillagerStat } from '@/redux/features/villagersSlice'
 import { closePickAVillagerModal } from '@/redux/features/modalSlice'
 
 // Types
@@ -36,6 +37,7 @@ export default function AutocompleteDefault() {
    */
   const allVillagersData = useSelector((state: RootState) => state.villagersReducer.allVillagersData)
   const gridObject = useSelector((state: RootState) => state.gridObjectReducer.gridObject)
+  const hasGameStarted = useSelector((state: RootState) => state.gridObjectReducer.hasGameStarted)
   const currentlySelectedCell = useSelector((state: RootState) => state.gridObjectReducer.currentlySelectedCell)
   const dispatch = useDispatch<AppDispatch>()
 
@@ -122,6 +124,13 @@ export default function AutocompleteDefault() {
         dispatch(closePickAVillagerModal())
       }
     }
+
+    // Increase games played count at the beginning of the game
+    if (!hasGameStarted) {
+      dispatch(markGameHasStarted())
+      dispatch(increaseGamesPlayedStat())
+    }
+    
   }
 
   // Split the given villager name to allow to be target for css styling
