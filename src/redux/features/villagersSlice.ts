@@ -106,10 +106,10 @@ export const villagers = createSlice({
 export const setupVillagerStore = createAsyncThunk(
   'villagers/setupVillagerStore',
   async (_, { dispatch }) => {
-    let villagersData = villagerData
+    let villagersData = villagerData;
 
-    // Only call fetch if in production
-    if (process.env.NEXT_PUBLIC_IS_DEV !== 'true') {
+    // Only call if villagersData is empty and fetched in production
+    if (villagersData.length === 0 && process.env.NEXT_PUBLIC_IS_DEV !== 'true') {
       await fetch('https://api.nookipedia.com/villagers', {
         headers: {
           'X-API-KEY': `${process.env.NEXT_PUBLIC_NOOKEIPEDIA_API_KEY}`
@@ -117,6 +117,9 @@ export const setupVillagerStore = createAsyncThunk(
       })
         .then(response => response.json())
         .then((data) => {
+          if (!Array.isArray(data)) {
+            throw new Error('Something went wrong in fetching villagers data')
+          }
           villagersData = data
         })
         .catch(() => {
@@ -297,7 +300,6 @@ export const setupVillagerStore = createAsyncThunk(
       // Placed the villager data in the game data object
       const formattedGameStats = {
         highScore: 0,
-        resetsUsed: 0,
         gamesFinished: 0,
         gamesPlayed: 0,
         villagers: parsedVillagerData 

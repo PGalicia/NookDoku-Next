@@ -2,11 +2,7 @@
   $statsCellWidth: 6rem;
 
   .c-gameStats__main {
-    grid-template-columns: repeat(2, $statsCellWidth);
-
-    @screen sm {
-      grid-template-columns: repeat(4, $statsCellWidth);
-    }
+    grid-template-columns: repeat(3, $statsCellWidth);
   }
 
   .c-gameStats__used {
