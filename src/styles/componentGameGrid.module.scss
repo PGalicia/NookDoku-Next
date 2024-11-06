@@ -38,7 +38,6 @@
     max-height: $cellSizeHeightMobile;
 
     @screen sm {
-      height: 100%;
       max-height: $cellSizeHeight;
     }
 
@@ -58,11 +57,13 @@
   .c-grid__rowCat {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
+    max-height: $cellSizeHeightMobile;
     text-align: center;
 
     @screen sm {
       writing-mode: horizontal-tb;
       transform: rotate(0deg);
+      max-height: $cellSizeHeight;
       text-align: left;
     }
   }
