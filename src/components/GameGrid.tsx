@@ -187,7 +187,7 @@ export default function GameGrid () {
             return (
               <div
                 key={`RegularCell: ${rowIndex}-${colIndex}`}
-                className={`${styles['c-grid__cell']} transition-transform flex relative rounded-md p-4 justify-center ${extraCellClassNames()} ${wrongAnimationCellClassName} ${correctAnimationCellClassName}`}
+                className={`${styles['c-grid__cell']} transition-transform flex relative rounded-md p-4 items-center justify-center ${extraCellClassNames()} ${wrongAnimationCellClassName} ${correctAnimationCellClassName}`}
                 onClick={() => onGridClick(rowIndex - 2, colIndex - 2)}
               >
                 {/* Villager image */}
