@@ -58,12 +58,12 @@
     writing-mode: vertical-rl;
     transform: rotate(180deg);
     max-height: $cellSizeHeightMobile;
+    height: 100%;
     text-align: center;
 
     @screen sm {
       writing-mode: horizontal-tb;
       transform: rotate(0deg);
-      height: 100%;
       max-height: $cellSizeHeight;
       text-align: left;
     }
