@@ -119,9 +119,6 @@ export const gridObject = createSlice({
 
         // Determine if cell needs to be locked
         targetGridObject.isComplete = targetGridObject.currentScore === 0
-
-        // // Decrease player score
-        // state.currentPlayerScore -= 1
   
         gridObjectCopy[targetIndex] = targetGridObject
   
