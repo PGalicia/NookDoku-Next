@@ -63,6 +63,7 @@
     @screen sm {
       writing-mode: horizontal-tb;
       transform: rotate(0deg);
+      height: 100%;
       max-height: $cellSizeHeight;
       text-align: left;
     }
