@@ -119,9 +119,6 @@ export const gridObject = createSlice({
 
         // Determine if cell needs to be locked
         targetGridObject.isComplete = targetGridObject.currentScore === 0
-
-        // Decrease player score
-        state.currentPlayerScore -= 1
   
         gridObjectCopy[targetIndex] = targetGridObject
   
@@ -146,7 +143,16 @@ export const gridObject = createSlice({
   
         gridObjectCopy[targetIndex] = targetGridObject
   
+        // Update gridObject
         state.gridObject = gridObjectCopy
+
+        // Adjust multiplier if the grid object only has one possible answer
+        const scoreMultiplier = targetGridObject.villagers.length === 1
+          ? 20
+          : 10;
+
+        // Update current player score
+        state.currentPlayerScore += (targetGridObject.currentScore * scoreMultiplier);
       }
     },
     updateFillInGridStatus: (state, status: PayloadAction<boolean>) => {

@@ -9,7 +9,8 @@ import { createSlice } from "@reduxjs/toolkit";
  */
 const initialState = {
   isPickAVillagerModalActive: false,
-  isHowToPlayModalActive: false
+  isHowToPlayModalActive: false,
+  isEndOfGameModalActive: false
 }
 
 /**

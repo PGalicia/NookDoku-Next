@@ -9,10 +9,11 @@ import {
   getGridObjectBasedOnCellIndex,
   getCurrentCellVillagerCount,
   updateSelectedCell,
-  isGameComplete
+  isGameComplete,
+  updateFillInGridStatus
 } from '@/redux/features/gridObjectSlice'
 import { openPickAVillagerModal } from '@/redux/features/modalSlice'
-import { increaseGamesFinishedStat } from '@/redux/features/villagersSlice'
+import { increaseGamesFinishedStat, updateTopScore } from '@/redux/features/villagersSlice'
 
 // Components
 import Image from 'next/image'
@@ -41,6 +42,8 @@ export default function GameGrid () {
   const gridObject = useSelector((state: RootState) => state.gridObjectReducer.gridObject)
   const isGridSetup = useSelector((state: RootState) => state.gridObjectReducer.isGridSetup)
   const selectedAnswers = useSelector((state: RootState) => state.gridObjectReducer.selectedAnswers)
+  const currentPlayerScore = useSelector((state: RootState) => state.gridObjectReducer.currentPlayerScore)
+  const gameStats = useSelector((state: RootState) => state.villagersReducer.gameStats)
   const dispatch = useDispatch<AppDispatch>()
 
   /**
@@ -57,6 +60,12 @@ export default function GameGrid () {
       // Increase game stats when game is complete
       if (gridObject.length > 0 && isGameComplete(gridObject)) {
         dispatch(increaseGamesFinishedStat());
+        dispatch(updateFillInGridStatus(true));
+
+        // Update top score if it beats your old score
+        if (currentPlayerScore > gameStats.highScore) {
+          dispatch(updateTopScore(currentPlayerScore))
+        }
       }
     },
     [gridObject]
@@ -150,9 +159,11 @@ export default function GameGrid () {
               </div>
             )
           } else {
-            const villagerCount = getCurrentCellVillagerCount(rowIndex - 2, colIndex - 2)(gridObject)
-            const extraCellClassNames = () => {
+            const villagerCount = getCurrentCellVillagerCount(rowIndex - 2, colIndex - 2)(gridObject);
+            const cellVillagerNameImage = findCellVillagerImage(getGridCellIndex(rowIndex - 2, colIndex - 2));
+            const cellScore = determineCellScore(rowIndex - 2, colIndex - 2);
 
+            const extraCellClassNames = () => {
               let extraClassnames = [
                 'hover:scale-105',
                 'cursor-pointer'
@@ -169,17 +180,20 @@ export default function GameGrid () {
               }
             }
 
+            const wrongAnimationCellClassName = cellScore === 0 ? styles['c-grid__cell--wrong'] : '';
+            const correctAnimationCellClassName = cellVillagerNameImage ? styles['c-grid__cell--correct'] : '';
+
             // Villager cell
             return (
               <div
                 key={`RegularCell: ${rowIndex}-${colIndex}`}
-                className={`${styles['c-grid__cell']} transition-transform flex relative rounded-md p-4 justify-center ${extraCellClassNames()}`}
+                className={`${styles['c-grid__cell']} transition-transform flex relative rounded-md p-4 justify-center ${extraCellClassNames()} ${wrongAnimationCellClassName} ${correctAnimationCellClassName}`}
                 onClick={() => onGridClick(rowIndex - 2, colIndex - 2)}
               >
                 {/* Villager image */}
-                {findCellVillagerImage(getGridCellIndex(rowIndex - 2, colIndex - 2)) && 
+                {cellVillagerNameImage && 
                   <Image
-                    src={findCellVillagerImage(getGridCellIndex(rowIndex - 2, colIndex - 2))!}
+                    src={cellVillagerNameImage!}
                     alt=""
                     className="w-full h-auto object-contain"
                     width={130}
@@ -192,7 +206,7 @@ export default function GameGrid () {
                   <div className="c-grid__scores flex text-black gap-0.5 right-1 -top-1 absolute">
                     <ScoreContainer
                       maxScore={determineCellMaxScore(rowIndex - 2, colIndex - 2)}
-                      currentScore={determineCellScore(rowIndex - 2, colIndex - 2)!}
+                      currentScore={cellScore!}
                       onlyOne={villagerCount === 1}
                     />
                   </div>

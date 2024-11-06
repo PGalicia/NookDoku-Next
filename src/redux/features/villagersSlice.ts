@@ -10,8 +10,6 @@ import {
 import {
   addToGridObject,
   markGridAsReady,
-  updatePlayerScore,
-  updateCurrentGameMaxScore,
   addToSelectedAnswers,
   getGridCellIndex
 } from '@/redux/features/gridObjectSlice'
@@ -85,6 +83,16 @@ export const villagers = createSlice({
       
       // Increase game finished count
       gameStatsCopy.gamesFinished++;
+
+      // Stringify the object and set it to the local storage
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gameStatsCopy));
+
+      // Update gameStats
+      state.gameStats = gameStatsCopy;
+    },
+    updateTopScore: (state, score: PayloadAction<number>) => {
+      const gameStatsCopy = state.gameStats
+      gameStatsCopy.highScore = score.payload;
 
       // Stringify the object and set it to the local storage
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gameStatsCopy));
@@ -330,8 +338,6 @@ export const setupVillagerStore = createAsyncThunk(
     // Update grid state
     dispatch(addToGridObject(gridObjectList));
     dispatch(markGridAsReady());
-    dispatch(updatePlayerScore(totalPlayerScore));
-    dispatch(updateCurrentGameMaxScore(totalPlayerScore));
 
     return {
       allVillagersData: villagersData,
@@ -344,6 +350,7 @@ export const setupVillagerStore = createAsyncThunk(
 export const {
   increaseVillagerStat,
   increaseGamesPlayedStat,
-  increaseGamesFinishedStat
+  increaseGamesFinishedStat,
+  updateTopScore
 } = villagers.actions
 export default villagers.reducer
