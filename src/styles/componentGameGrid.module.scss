@@ -51,13 +51,13 @@
   .c-grid__rowCat {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
-    height: $cellSizeHeightMobile;
+    max-height: $cellSizeHeightMobile;
     text-align: center;
 
     @screen sm {
       writing-mode: horizontal-tb;
       transform: rotate(0deg);
-      height: $cellSizeHeight;
+      max-height: $cellSizeHeight;
       text-align: left;
     }
   }

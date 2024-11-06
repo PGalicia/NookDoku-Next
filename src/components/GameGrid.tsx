@@ -153,7 +153,7 @@ export default function GameGrid () {
               <div
                 key={`RowCategory: ${rowIndex}-${colIndex}`}
               >
-                <div className={`${styles['c-grid__rowCat']} ${gridCategoryHeightClass} font-mono text-white font-bold uppercase text-sm leading-tight`}>
+                <div className={`${styles['c-grid__rowCat']} ${gridCategoryHeightClass} font-mono text-white font-bold uppercase text-sm leading-tight h-full`}>
                   {findRowOrColumnCategory('row', rowIndex - 2)}
                 </div>
               </div>
