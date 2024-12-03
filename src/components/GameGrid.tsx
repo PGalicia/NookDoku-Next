@@ -195,7 +195,7 @@ export default function GameGrid () {
                   <Image
                     src={cellVillagerNameImage!}
                     alt=""
-                    className="w-auto h-full"
+                    className="w-full h-full object-contain"
                     width={130}
                     height={130}
                   />

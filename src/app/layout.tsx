@@ -32,7 +32,7 @@ export default function RootLayout({
         <ReduxProvider>
           <HeaderDefault />
           {children}
-          <div className="text-sm text-white/50 text-center uppercase font-mono p-4">@{new Date().getFullYear()} Patrick Galicia • <a className="hover:underline" href="https://buymeacoffee.com/patrickgalicia" target="_blank">Buy Me A Coffee</a></div>
+          <div className="text-sm text-white/50 text-center uppercase font-mono p-4">@{new Date().getFullYear()} Patrick Galicia • <a className="underline hover:font-bold" href="https://buymeacoffee.com/patrickgalicia" target="_blank">Buy Me A Coffee</a> • Data and images sourced from <a className="underline hover:font-bold" href="https://api.nookipedia.com/" target="_blank">Nookipedia</a></div>
           <Analytics />
         </ReduxProvider>
       </body>
