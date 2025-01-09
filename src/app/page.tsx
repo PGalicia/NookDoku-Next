@@ -39,6 +39,19 @@ export default function Home() {
     [dispatch]
   );
 
+  // Update body overflow based on if any modals are active
+  useEffect(
+    () => {
+      if (isHowToPlayModalActive || isPickAVillagerModalActive) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+
+    },
+    [isPickAVillagerModalActive, isHowToPlayModalActive]
+  )
+
   /**
    * Methods
    */
